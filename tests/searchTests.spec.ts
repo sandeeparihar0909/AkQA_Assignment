@@ -17,6 +17,7 @@ test('TC01 Verify that flights are shown when the user searches for todays date'
     await searchPage.selectTravleDate(searchPage.getTodayDay(), searchPage.getTodayMonth());
     await searchPage.clickOnExploreButton();
 
+    await searchPage.validateSearchResults();
   });
 
 // test('TC02 Verify that flights are shown when the user searches for tomorrows date', async () => {

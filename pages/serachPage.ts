@@ -14,7 +14,7 @@ export class SearchPage {
   private previousMonth: Locator;
   private searchButton: Locator;
   private resultsHeading: Locator;
-  private noFlightsMessage: Locator;
+  private flightResultList: Locator;
 
   readonly page: Page;
 
@@ -36,8 +36,8 @@ export class SearchPage {
     this.previousMonth = page.getByRole('button', { name: 'Previous month' });
     this.searchButton = page.getByRole('button', { name: 'Explore' });
 
-    this.resultsHeading = page.getByRole('heading', {name: /flights from|flight results/i,});
-    this.noFlightsMessage = page.getByText(/no flights|couldnot find any flights|no results/i,);
+    this.resultsHeading = page.getByRole('heading', {name: /We found/});
+    this.flightResultList = page.locator('//ul[contains(@class,"List-module")]/li');
   }
 
   async navigateToSearchPage() {
@@ -93,15 +93,13 @@ export class SearchPage {
 
   async clickOnExploreButton(){
     await this.searchButton.click();
+    await this.page.waitForLoadState('networkidle');
   }
 
   async validateSearchResults(){
-
+    await expect(this.resultsHeading).toBeVisible();
+    const count = await this.flightResultList.count();
+    expect(count).toBeGreaterThan(0);
   }
-
-  async validateNoResultMessage(){
-
-  }
-
 
 }
